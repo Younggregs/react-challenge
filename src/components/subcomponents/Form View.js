@@ -68,8 +68,8 @@ render() {
       event.stopPropagation();
     }
 
-    setValidated(true); 
-    if(validated){
+    setValidated(true);
+    if(document.getElementById("hobby").value){
       that.updateTable();
     }
     
