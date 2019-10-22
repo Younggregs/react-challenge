@@ -94,7 +94,6 @@ render() {
             type="text"
             placeholder="First name"
             id = "firstname"
-            defaultValue="Firstname"
           />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
@@ -107,7 +106,6 @@ render() {
             type="text"
             placeholder="Last name"
             id="lastname"
-            defaultValue="Lastname"
           />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
