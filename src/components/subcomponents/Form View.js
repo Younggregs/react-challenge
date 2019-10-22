@@ -9,6 +9,7 @@ export default class FormView extends React.Component {
   state = {
      userRegister: [],
      serial_no: 1,
+     birthday: '1990-01-01'
   }
 
 
@@ -18,6 +19,8 @@ export default class FormView extends React.Component {
       var d = new Date()
 
       var birthday = document.getElementById("birthday").value
+      this.setState({ birthday })
+
       var dt = new Date(birthday)
 
       var birth_date = dt.getYear()
@@ -36,7 +39,7 @@ export default class FormView extends React.Component {
        'serial_no' : this.state.serial_no,
        'firstname' : document.getElementById("firstname").value,
        'lastname' : document.getElementById("lastname").value,
-       'birthday' : document.getElementById("birthday").value,
+       'birthday' : this.state.birthday,
        'age' : document.getElementById("age").value,
        'hobby' : document.getElementById("hobby").value,
      }
@@ -117,7 +120,7 @@ render() {
               type="date"
               placeholder="Birthday"
               id="birthday"
-              defaultValue="1990-01-01"
+              defaultValue={that.state.birthday}
               onChange={that.getAge.bind(that)}
               required
             />
