@@ -4,13 +4,13 @@ import { addUser } from '../actions'
 import { createStore } from 'redux'
 import rootReducer from '../reducers'
 import { shallowEqual, useSelector, useDispatch } from 'react-redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import SuccessAlert from './sub_components/Success Alert'
 
 
 
 
-
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, composeWithDevTools())
 
 
 
