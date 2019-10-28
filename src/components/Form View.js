@@ -3,7 +3,7 @@ import { Button, InputGroup, Form, Row, Col, Table } from 'react-bootstrap';
 import { addUser } from '../actions'
 import { createStore } from 'redux'
 import rootReducer from '../reducers'
-import { shallowEqual, useSelector, useDispatch } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import SuccessAlert from './sub_components/Success Alert'
 
@@ -138,7 +138,6 @@ updateTable(){
      store.dispatch(addUser(buffer))
      const uList = store.getState()
      this.setState({ userRegister: uList.users, successAlert: true }) 
-     console.log(uList)
 
 
 
@@ -173,7 +172,7 @@ render() {
 
   const UserL = () => {
     
-    console.log(users)
+
     return <Table striped bordered hover>
       <thead>
         <tr>
@@ -234,7 +233,7 @@ render() {
       <Form noValidate validated={validated}>
       <Form.Row>
 
-        <Form.Group as={Col} md="6" controlId="validationCustom01">
+        <Form.Group as={Col} md="6">
           <Form.Label>First name</Form.Label>
           <Form.Control
             required
@@ -254,7 +253,7 @@ render() {
 
 
 
-        <Form.Group as={Col} md="6" controlId="validationCustom02">
+        <Form.Group as={Col} md="6">
           <Form.Label>Last name</Form.Label>
           <Form.Control
             required
@@ -276,7 +275,7 @@ render() {
 
 
         <Form.Row>
-        <Form.Group as={Col} md="6" controlId="validationCustomUsername">
+        <Form.Group as={Col} md="6">
           <Form.Label>Birthday</Form.Label>
           <InputGroup>
             <Form.Control
@@ -301,7 +300,7 @@ render() {
 
 
 
-        <Form.Group as={Col} md="4" controlId="validationCustom03">
+        <Form.Group as={Col} md="4">
           <Form.Label>Age</Form.Label>
           <Form.Control 
             id="age" 
@@ -322,7 +321,7 @@ render() {
 
 
         <Form.Row>
-        <Form.Group as={Col} md="12" controlId="validationCustom04">
+        <Form.Group as={Col} md="12">
           <Form.Label>Hobby</Form.Label>
           <Form.Control 
             id="hobby" 
