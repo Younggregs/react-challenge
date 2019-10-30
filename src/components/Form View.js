@@ -3,7 +3,6 @@ import { Button, InputGroup, Form, Row, Col, Table } from 'react-bootstrap';
 import { addUser } from '../actions'
 import store from '../store'
 import { shallowEqual, useSelector } from 'react-redux'
-import firebase from '../firebase'
 import SuccessAlert from './sub_components/Success Alert'
 import Api from './sub_components/Api'
 
@@ -19,27 +18,6 @@ state = {
      user_id: 1
 }
 
-
-
-
-componentDidMount() {
-  const userRef = firebase.database().ref("entries")
-  this.listener = userRef.on("value", snapshot => {
-
-  this.setState({ users: snapshot.val() || [] });
-  });
-
-  console.log('todos: ' + this.state.users)
-}
-
-
-
-
-
-componentWillUnmount() {
-  // #4
-  this.listener.off();
-}
 
 
 
@@ -82,7 +60,7 @@ componentWillUnmount() {
 
 
 
-getAge(){
+getAge(){  
     
       var d = new Date()
 
