@@ -1,20 +1,11 @@
 import React, { useState} from 'react';
 import { Button, InputGroup, Form, Row, Col, Table } from 'react-bootstrap';
 import { addUser } from '../actions'
-import { createStore } from 'redux'
-import rootReducer from '../reducers'
+import store from '../store'
 import { shallowEqual, useSelector } from 'react-redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import firebase from '../firebase'
 import SuccessAlert from './sub_components/Success Alert'
-
-
-
-
-const store = createStore(rootReducer, composeWithDevTools())
-
-
-
-
+import Api from './sub_components/Api'
 
 
 export default class FormView extends React.Component {
@@ -23,8 +14,67 @@ state = {
      userRegister: [],
      serial_no: 1,
      birthday: '1990-01-01',
-     stop: true
+     stop: true,
+     users: null,
+     user_id: 1
 }
+
+
+
+
+componentDidMount() {
+  const userRef = firebase.database().ref("entries")
+  this.listener = userRef.on("value", snapshot => {
+
+  this.setState({ users: snapshot.val() || [] });
+  });
+
+  console.log('todos: ' + this.state.users)
+}
+
+
+
+
+
+componentWillUnmount() {
+  // #4
+  this.listener.off();
+}
+
+
+
+
+
+
+  async submitToFirebase(buffer){
+
+    this.setState({ isLoading: true})
+   
+    try {
+      const res = await fetch(Api, {
+       
+       method: 'POST',
+       headers : {
+        'Content-Type': 'application/x-www-form-urlencoded',
+       },
+       body: JSON.stringify(buffer),
+       
+
+      })
+      const userList = await res.json();
+        this.setState({
+          userList
+        });
+      //console.log(userList)
+
+    } catch (e) {
+      console.log(e);
+    }
+
+    this.setState({ isLoading: false})
+
+
+  }
 
 
 
@@ -80,46 +130,14 @@ setHobby(){
 
 
 
-getObject(){
-
-  const buffer = {
-    'serial_no' : this.state.serial_no,
-    'firstname' : document.getElementById("firstname").value,
-    'lastname' : document.getElementById("lastname").value,
-    'birthday' : this.state.birthday,
-    'age' : document.getElementById("age").value,
-    'hobby' : document.getElementById("hobby").value,
- }
-
-
-
-
-
-
-
-
-
- this.setState({ 
-    serial_no: this.state.serial_no + 1
- })
-
- return buffer
-
-}
-
-
-
-
-
-
-
 
 
 
 updateTable(){
+
      
     const buffer = {
-       'serial_no' : this.state.serial_no,
+       'user_id' : this.state.user_id,
        'firstname' : document.getElementById("firstname").value,
        'lastname' : document.getElementById("lastname").value,
        'birthday' : this.state.birthday,
@@ -127,12 +145,9 @@ updateTable(){
        'hobby' : document.getElementById("hobby").value,
     }
 
+    this.setState({ user_id: this.state.user_id + 1})
 
-
-
-    this.setState({ 
-       serial_no: this.state.serial_no + 1
-    })
+    this.submitToFirebase(buffer)
 
 
      store.dispatch(addUser(buffer))
@@ -145,6 +160,9 @@ updateTable(){
      if(this.state.userRegister){
        this.setState({ showTable: true })
      }
+
+
+     console.log(this.state.users)
 
 
 
@@ -176,7 +194,7 @@ render() {
     return <Table striped bordered hover>
       <thead>
         <tr>
-          <th>serial_no</th>
+          <th>User ID</th>
           <th>First Name</th>
           <th>Last Name</th>
           <th>Birthday</th>
@@ -187,7 +205,7 @@ render() {
     <tbody>
     {that.state.userRegister.map(item => (
       <tr>
-        <td>{item.object['serial_no']}</td>
+        <td>{item.object['user_id']}</td>
         <td>{item.object['firstname']}</td>
         <td>{item.object['lastname']}</td>
         <td>{item.object['birthday']}</td>
@@ -246,9 +264,7 @@ render() {
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
 
-
-
-
+   
 
 
 

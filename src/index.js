@@ -2,14 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import rootReducer from './reducers'
+import store from './store'
 
 import Home from './components/Home'
 
-
-const store = createStore(rootReducer)
 
 
 
