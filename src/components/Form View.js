@@ -164,7 +164,7 @@ render() {
   function FormRegister() {
 
   const [validated, setValidated] = useState(false);
-  const users = useSelector(state => state.users, shallowEqual)
+  //const users = useSelector(state => state.users, shallowEqual)
 
   const UserL = () => {
     
