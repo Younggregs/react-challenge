@@ -9,23 +9,13 @@ const users = (state = [], action) => {
 
           }
         ]
+      case 'REFRESH_LIST':
+        return state = undefined
+      case 'UPDATE_LIST':
+        return state = action.payload
       default:
         return state
     }
   }
   
   export default users
-
-
-
-
-
-
-
-
-
-
-
-
-
-  

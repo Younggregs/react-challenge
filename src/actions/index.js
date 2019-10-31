@@ -6,4 +6,15 @@ export const addUser = object => ({
   object
 })
 
+export const refreshList = text => ({
+  type: 'REFRESH_LIST',
+  text
+})
+
+export const updateList = payload => ({
+  type: 'UPDATE_LIST',
+  payload
+})
+
+
 

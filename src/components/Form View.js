@@ -2,12 +2,13 @@ import React, { useState} from 'react';
 import { Button, InputGroup, Form, Row, Col, Table } from 'react-bootstrap';
 import { addUser } from '../actions'
 import store from '../store'
-import { shallowEqual, useSelector } from 'react-redux'
 import SuccessAlert from './sub_components/Success Alert'
-import Api from './sub_components/Api'
 
 
 export default class FormView extends React.Component {
+
+
+
 
 state = {
      userRegister: [],
@@ -15,44 +16,24 @@ state = {
      birthday: '1990-01-01',
      stop: true,
      users: null,
-     user_id: 1
+     user_id: 1,
+     showTable: true
 }
 
 
 
+async componentWillMount() {
+    
+    const that = this
+    setTimeout(function(){ 
+      const uList = store.getState()
+      that.setState({ userRegister: uList.users.reverse() })
+     }, 5000);
+    
+    
+}
 
 
-
-
-  async submitToFirebase(buffer){
-
-    this.setState({ isLoading: true})
-   
-    try {
-      const res = await fetch(Api, {
-       
-       method: 'POST',
-       headers : {
-        'Content-Type': 'application/x-www-form-urlencoded',
-       },
-       body: JSON.stringify(buffer),
-       
-
-      })
-      const userList = await res.json();
-        this.setState({
-          userList
-        });
-      //console.log(userList)
-
-    } catch (e) {
-      console.log(e);
-    }
-
-    this.setState({ isLoading: false})
-
-
-  }
 
 
 
@@ -125,12 +106,15 @@ updateTable(){
 
     this.setState({ user_id: this.state.user_id + 1})
 
-    this.submitToFirebase(buffer)
-
-
      store.dispatch(addUser(buffer))
-     const uList = store.getState()
-     this.setState({ userRegister: uList.users, successAlert: true }) 
+     
+     
+     const that = this 
+
+     setTimeout(function(){ 
+      const uList = store.getState()
+      that.setState({ userRegister: uList.users.reverse(), successAlert: true }) 
+     }, 5000);
 
 
 
@@ -139,13 +123,7 @@ updateTable(){
        this.setState({ showTable: true })
      }
 
-
-     console.log(this.state.users)
-
-
-
-
-  }
+}
 
 
 
@@ -159,6 +137,7 @@ updateTable(){
 render() {
 
   const that = this
+
   
   
   function FormRegister() {
@@ -183,12 +162,12 @@ render() {
     <tbody>
     {that.state.userRegister.map(item => (
       <tr>
-        <td>{item.object['user_id']}</td>
-        <td>{item.object['firstname']}</td>
-        <td>{item.object['lastname']}</td>
-        <td>{item.object['birthday']}</td>
-        <td>{item.object['age']}</td>
-        <td>{item.object['hobby']}</td>
+        <td>{item.user_id}</td>
+        <td>{item.firstname}</td>
+        <td>{item.lastname}</td>
+        <td>{item.birthday}</td>
+        <td>{item.age}</td>
+        <td>{item.hobby}</td>
       </tr>
     ))}
     </tbody>
@@ -237,7 +216,7 @@ render() {
             placeholder="First name"
             id = "firstname"
             value = {that.state.firstname}
-            onChange={that.setFirstname.bind(that)}
+            //onMouseOut={that.setFirstname()}
           />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
@@ -255,7 +234,7 @@ render() {
             placeholder="Last name"
             id="lastname"
             value = {that.state.lastname}
-            onChange={that.setLastname.bind(that)}
+            //onChange={that.setLastname()}
           />
           <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
         </Form.Group>
@@ -276,8 +255,8 @@ render() {
               type="date"
               placeholder="Birthday"
               id="birthday"
-              defaultValue={that.state.birthday}
-              onChange={that.getAge.bind(that)}
+              //defaultValue={that.state.birthday}
+              //onChange={that.getAge.bind(that)}
               required
             />
             <Form.Control.Feedback type="invalid">
@@ -299,7 +278,7 @@ render() {
           <Form.Control 
             id="age" 
             type="number" 
-            defaultValue={that.state.age} 
+            //defaultValue={that.state.age} 
             //onChange={that.setAge.bind(that)}
             required />
           <Form.Control.Feedback type="invalid">
@@ -326,7 +305,7 @@ render() {
           <Form.Control.Feedback type="invalid">
             Please provide a valid hobby.
           </Form.Control.Feedback>
-        </Form.Group>
+        </Form.Group>  
         
       </Form.Row>
       <Button type="button" onClick={handleSubmit}>Submit form</Button>
